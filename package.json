@@ -1,0 +1,28 @@
+{
+  "name": "serverless-db-node-sdk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix --ext .js ./index.js"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@git.code.oa.com:CMFE/serverless-db-node-sdk.git"
+  },
+  "author": "justynchen",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-eslint": "^10.0.2",
+    "cross-env": "^5.2.0",
+    "eslint": "^6.1.0",
+    "pre-commit": "^1.2.2"
+  },
+  "dependencies": {
+    "debug": "^4.1.1"
+  }
+}
