@@ -39,8 +39,8 @@ module.exports = class ScfMysql{
       console.log(dbConfig)
       const pool = this.poolBucket[this.db_name] = mysql.createPool(dbConfig)
       pool.on('acquire', function (connection) {
-        console.log('Connection %d acquired', connection.threadId);
-      });
+        console.log('Connection %d acquired', connection.threadId)
+      })
       pool.getConnection(callback)
     }else{
       this.poolBucket[this.db_name].getConnection(function(err, connection) {
