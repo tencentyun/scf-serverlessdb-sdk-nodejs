@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --fix --ext .js ./index.js"
+    "lint": "eslint --fix --ext .js ./index.js ./test"
   },
   "pre-commit": [
     "lint"
