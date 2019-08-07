@@ -4,9 +4,9 @@ let sdk = require('../index')
 
 //eslint-disable-next-line no-unused-vars
 exports.main_handler = async (event, context, callback) => {
-  let db1 = new sdk('TESTDB1')
 
   //callback mode
+  let db1 = new sdk('TESTDB1')
   db1.getConnection((err,connection)=>{
     if(!err){
       connection.query('select * from test',(err,results)=>{
