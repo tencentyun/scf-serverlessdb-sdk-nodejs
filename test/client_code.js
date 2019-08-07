@@ -16,6 +16,7 @@ exports.main_handler = async (event, context, callback) => {
         }else{
           console.error(err)
         }
+        //test end pool
         db1.end()
       })
     }else{
@@ -23,11 +24,9 @@ exports.main_handler = async (event, context, callback) => {
     }
   })
 
-
-  //async mode
-  let connection = await (()=>{
+  function getDBConnection(db){
     return new Promise((resolve,reject)=>{
-      db2.getConnection((err,connection)=>{
+      db.getConnection((err,connection)=>{
         if(!err){
           resolve(connection)
         }else{
@@ -36,13 +35,23 @@ exports.main_handler = async (event, context, callback) => {
         }
       })
     })
-  })()
+  }
 
-  connection.query('select * from coffee',(err,results)=>{
-    if(!err){
-      console.log('db2 query result:',results)
-    }else{
-      console.error(err)
-    }
-  })
+  function query(connection,sql){
+    return new Promise((resolve,reject)=>{
+      connection.query(sql,(err,results)=>{
+        if(!err){
+          resolve(results)
+        }else{
+          reject(err)
+        }
+      })
+    })
+  }
+
+  //async mode
+  let connection = await getDBConnection(db2)
+  let result = await query(connection,'select * from coffee')
+
+  console.log('db2 query result:',result)
 }
