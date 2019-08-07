@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node test/index",
     "lint": "eslint --fix --ext .js ./index.js ./test"
   },
   "pre-commit": [
@@ -23,7 +23,6 @@
     "pre-commit": "^1.2.2"
   },
   "dependencies": {
-    "debug": "^4.1.1",
     "mysql": "^2.17.1"
   }
 }
