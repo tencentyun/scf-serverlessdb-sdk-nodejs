@@ -5,7 +5,6 @@ let sdk = require('../index')
 //eslint-disable-next-line no-unused-vars
 exports.main_handler = async (event, context, callback) => {
   let db1 = new sdk('TESTDB1')
-  let db2 = new sdk('TESTDB2')
 
   //callback mode
   db1.getConnection((err,connection)=>{
@@ -24,6 +23,7 @@ exports.main_handler = async (event, context, callback) => {
     }
   })
 
+  //async mode
   function getDBConnection(db){
     return new Promise((resolve,reject)=>{
       db.getConnection((err,connection)=>{
@@ -49,7 +49,7 @@ exports.main_handler = async (event, context, callback) => {
     })
   }
 
-  //async mode
+  let db2 = new sdk('TESTDB2')
   let connection = await getDBConnection(db2)
   let result = await query(connection,'select * from coffee')
 
