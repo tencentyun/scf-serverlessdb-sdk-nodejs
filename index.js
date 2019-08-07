@@ -4,7 +4,7 @@ function errorHandler(err){
   console.error(err)
 }
 
-export default class ScfMysql{
+module.exports = class ScfMysql{
 
   constructor(db_name){
     this.db_name = db_name
@@ -16,6 +16,7 @@ export default class ScfMysql{
   }
 
   getConnection(callback){
+    callback = callback || function(){}
     if(!this.poolBucket){
       global.poolBucket = {}
      
@@ -25,18 +26,21 @@ export default class ScfMysql{
       const DB_HOST = process.env[`${this.db_name}_HOST`]
       const DB_PORT = process.env[`${this.db_name}_PORT`]
       const DB_USER = process.env[`${this.db_name}_USER`]
-      const DB_PASSWORD = process.env[`${this.db_name}_USER`]
+      const DB_PASSWORD = process.env[`${this.db_name}_PASSWORD`]
       const DB_NAME = process.env[`${this.db_name}_DATABASE`]
 
       const dbConfig = {
         host     : DB_HOST,
         user     : DB_USER,
-        port: DB_PORT,
+        port: +DB_PORT,
         password : DB_PASSWORD,
         database : DB_NAME
       }
+      console.log(dbConfig)
       const pool = this.poolBucket[this.db_name] = mysql.createPool(dbConfig)
-      
+      pool.on('acquire', function (connection) {
+        console.log('Connection %d acquired', connection.threadId);
+      });
       pool.getConnection(callback)
     }else{
       this.poolBucket[this.db_name].getConnection(function(err, connection) {
@@ -50,6 +54,7 @@ export default class ScfMysql{
     if(this.poolBucket[this.db_name]){
       this.poolBucket[this.db_name].end((err)=>{
         if(!err){
+          console.log(this.db_name + ' pool ended')
           delete this.poolBucket[this.db_name]
         }else{
           errorHandler(err)
