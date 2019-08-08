@@ -1,7 +1,7 @@
 let clientCode = require('./client_code')
 let sdk = require('../index')
 let context = {
-  db:{
+  database:{
     connection:sdk.getConnection,
     endConnection: sdk.end
   }
