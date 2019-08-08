@@ -39,11 +39,11 @@ module.exports = {
             console.log('Connection %d acquired', connection.threadId)
           })
           pool.getConnection(function(err, connection) {
-            blueBird.promisifyAll(connection)
             if(err){
               errorHandler(err)
               reject(err)
             }else{
+              blueBird.promisifyAll(connection)
               resolve(connection)
             }
             callback(err,connection)
@@ -54,6 +54,7 @@ module.exports = {
               errorHandler(err)
               reject(err)
             }else{
+              blueBird.promisifyAll(connection)
               resolve(connection)
             }
             callback(err,connection)

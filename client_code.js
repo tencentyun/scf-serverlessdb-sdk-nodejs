@@ -3,7 +3,7 @@
 //eslint-disable-next-line no-unused-vars
 exports.main_handler = async (event, context, callback) => {
 
-  context.database = context.database || require('../index').database
+  context.database = context.database || require('./index').database
 
   //callback mode
   context.database('TESTDB1').connection((err,connection)=>{
