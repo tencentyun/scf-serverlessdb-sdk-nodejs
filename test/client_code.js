@@ -4,7 +4,7 @@
 exports.main_handler = async (event, context, callback) => {
 
   //callback mode
-  context.database.connection('TESTDB1',(err,connection)=>{
+  context.database('TESTDB1').connection((err,connection)=>{
     if(!err){
       connection.query('select * from test',async (err,results)=>{
         if(!err){
@@ -13,7 +13,7 @@ exports.main_handler = async (event, context, callback) => {
           console.error(err)
         }
         //test end pool
-        await context.database.endConnection('TESTDB1')
+        await context.database('TESTDB1').endConnection()
       })
     }else{
       console.error(err)
@@ -21,7 +21,7 @@ exports.main_handler = async (event, context, callback) => {
   })
 
   //async mode
-  let connection = await context.database.connection('TESTDB2')
+  let connection = await context.database('TESTDB2').connection()
   connection.query('select * from coffee',(err,results)=>{
     console.log('db2 callback query result:',results)
   })

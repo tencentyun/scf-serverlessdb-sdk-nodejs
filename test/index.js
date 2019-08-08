@@ -1,10 +1,7 @@
 let clientCode = require('./client_code')
 let sdk = require('../index')
 let context = {
-  database:{
-    connection:sdk.getConnection,
-    endConnection: sdk.end
-  }
+  database:sdk.database
 }
 process.env['DB_TESTDB1_HOST'] = 'localhost'
 process.env['DB_TESTDB1_PORT'] = 3306
