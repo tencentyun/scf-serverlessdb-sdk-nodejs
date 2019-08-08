@@ -1,4 +1,5 @@
 const mysql = require('mysql')
+const blueBird = require('bluebird')
 
 function errorHandler(err){
   console.error(err)
@@ -32,6 +33,7 @@ module.exports = {
           console.log('Connection %d acquired', connection.threadId)
         })
         pool.getConnection(function(err, connection) {
+          blueBird.promisifyAll(connection)
           if(err){
             errorHandler(err)
             reject(err)

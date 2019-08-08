@@ -26,18 +26,7 @@ exports.main_handler = async (event, context, callback) => {
     console.log('db2 callback query result:',results)
   })
 
-  function promisifyQuery(connection,sql){
-    return new Promise((resolve,reject)=>{
-      connection.query(sql,(err,results)=>{
-        if(!err){
-          resolve(results)
-        }else{
-          reject(err)
-        }
-      })
-    })
-  }
-  let result = await promisifyQuery(connection,'select * from coffee') //same as connection.query
+  let result = await connection.queryAsync('select * from coffee') //same as connection.query
 
 
   console.log('db2 query result:',result)
