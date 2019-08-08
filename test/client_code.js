@@ -1,22 +1,19 @@
 //clientCodeDemo
 
-let sdk = require('../index')
-
 //eslint-disable-next-line no-unused-vars
 exports.main_handler = async (event, context, callback) => {
 
   //callback mode
-  let db1 = new sdk('TESTDB1')
-  db1.getConnection((err,connection)=>{
+  context.db.connection('TESTDB1',(err,connection)=>{
     if(!err){
-      connection.query('select * from test',(err,results)=>{
+      connection.query('select * from test',async (err,results)=>{
         if(!err){
           console.log('db1 query result:',results)
         }else{
           console.error(err)
         }
         //test end pool
-        db1.end()
+        await context.db.endConnection('TESTDB1')
       })
     }else{
       console.error(err)
@@ -24,20 +21,12 @@ exports.main_handler = async (event, context, callback) => {
   })
 
   //async mode
-  function getDBConnection(db){
-    return new Promise((resolve,reject)=>{
-      db.getConnection((err,connection)=>{
-        if(!err){
-          resolve(connection)
-        }else{
-          console.error(err)
-          reject(err)
-        }
-      })
-    })
-  }
+  let connection = await context.db.connection('TESTDB2')
+  connection.query('select * from coffee',(err,results)=>{
+    console.log('db2 callback query result:',results)
+  })
 
-  function query(connection,sql){
+  function promisifyQuery(connection,sql){
     return new Promise((resolve,reject)=>{
       connection.query(sql,(err,results)=>{
         if(!err){
@@ -48,10 +37,8 @@ exports.main_handler = async (event, context, callback) => {
       })
     })
   }
+  let result = await promisifyQuery(connection,'select * from coffee') //same as connection.query
 
-  let db2 = new sdk('TESTDB2')
-  let connection = await getDBConnection(db2)
-  let result = await query(connection,'select * from coffee')
 
   console.log('db2 query result:',result)
 }
