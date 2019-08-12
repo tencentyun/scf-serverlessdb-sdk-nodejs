@@ -1,5 +1,5 @@
 {
-  "name": "serverless-db-node-sdk",
+  "name": "scf-nodejs-serverlessdb-sdk",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
