@@ -33,7 +33,6 @@ module.exports = {
             password : DB_PASSWORD,
             database : DB_NAME
           }
-          console.log(dbConfig)
           const pool = global.poolBucket[this.db_name] = mysql.createPool(dbConfig)
           pool.on('acquire', function (connection) {
             console.log('Connection %d acquired', connection.threadId)
