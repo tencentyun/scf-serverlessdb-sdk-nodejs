@@ -31,9 +31,19 @@ exports.main_handler = async (event, context, callback) => {
   let connection = await database('TESTDB2').connection()
   connection.query('select * from coffee',(err,results)=>{
     console.log('db2 callback query result:',results)
+    connection.release()
   })
 
   let result = await connection.queryAsync('select * from coffee') //same as connection.query
+  connection.release()
+  console.log('db2 query result:',result)
+
+  //pool
+  let pool = await database('TESTDB2').pool()
+  pool.query('select * from coffee',(err,results)=>{
+    console.log('db2 callback query result:',results)
+  })
+  // no need to release pool
 
   console.log('db2 query result:',result)
 }

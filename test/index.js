@@ -16,4 +16,12 @@ process.env['DB_TESTDB2_USER'] = dbConfig[1].user
 process.env['DB_TESTDB2_PASSWORD'] = dbConfig[1].pwd
 process.env['DB_TESTDB2_DATABASE'] = dbConfig[1].database
 
-clientCode.main_handler({},context)
+async function a(){
+  for(let i = 0;i<10000;i++){
+    let start = new Date()
+    await clientCode.main_handler({},context)
+    let end = new Date()
+    console.log(i,'time' ,end - start)
+  }
+}
+a()
