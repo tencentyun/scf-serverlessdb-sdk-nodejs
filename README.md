@@ -5,47 +5,30 @@
 
 ## 用法
 ``` javascript
+/*
+环境变量(示例)：
+process.env['DB_TESTDB2_HOST'] = 192.168.1.1
+process.env['DB_TESTDB2_PORT'] = 3306
+process.env['DB_TESTDB2_USER'] = ycp424c
+process.env['DB_TESTDB2_PASSWORD'] = pwd123321123
+process.env['DB_TESTDB2_DATABASE'] = db_name
+*/
+
+const database = require('scf-nodejs-serverlessdb-sdk').database
 
 exports.main_handler = async (event, context, callback) => {
-
-  const database = require('scf-nodejs-serverlessdb-sdk').database
-
-  //callback mode
-  database('TESTDB1').connection((err,connection)=>{
-    if(!err){
-      connection.query('select * from test',async (err,results)=>{
-        if(!err){
-          console.log('db1 query result:',results)
-        }else{
-          console.error(err)
-        }
-        //test end pool
-        await database('TESTDB1').endConnection()
-      })
-    }else{
-      console.error(err)
-    }
-  })
-
   //async mode
   let connection = await database('TESTDB2').connection()
-  connection.query('select * from coffee',(err,results)=>{
-    console.log('db2 callback query result:',results)
-    connection.release()
-  })
-
+ 
   let result = await connection.queryAsync('select * from coffee') //same as connection.query
   connection.release()
   console.log('db2 query result:',result)
 
-  //pool
-  let pool = await database('TESTDB2').pool()
-  pool.query('select * from coffee',(err,results)=>{
-    console.log('db2 callback query result:',results)
-  })
+  let pool = (async () => await database('TESTDB2').pool())()
+  let result2 = await pool.queryAsync('select * from coffee')
   // no need to release pool
 
-  console.log('db2 query result:',result)
+  console.log('db2 query result:',result2)
 }
 
 
