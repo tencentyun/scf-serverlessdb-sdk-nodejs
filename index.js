@@ -51,6 +51,7 @@ module.exports = {
     }
     this.connection = async function(callback){
       let pool = await this.pool()
+      callback = callback || function(){}
       return new Promise((resolve,reject)=>{
         pool.getConnection(function(err, connection) {
           if(err){
