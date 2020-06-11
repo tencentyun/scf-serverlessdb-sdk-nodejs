@@ -17,15 +17,15 @@ process.env['DB_TESTDB2_DATABASE'] = db_name
 const database = require('scf-nodejs-serverlessdb-sdk').database
 
 exports.main_handler = async (event, context, callback) => {
-  //async mode
-  let connection = await database('TESTDB2').connection()
- 
-  let result = await connection.queryAsync('select * from coffee') //same as connection.query
-  connection.release()
+  //use connection
+  const connection = await database('TESTDB2').connection()
+  const result = await connection.queryAsync('select * from coffee')
+  connection.release() //must release before return
   console.log('db2 query result:',result)
 
-  let pool = (async () => await database('TESTDB2').pool())()
-  let result2 = await pool.queryAsync('select * from coffee')
+  //use pool
+  const pool = await database('TESTDB2').pool()
+  const result2 = await pool.queryAsync('select * from coffee')
   // no need to release pool
 
   console.log('db2 query result:',result2)
