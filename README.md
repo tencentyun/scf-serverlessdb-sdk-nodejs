@@ -16,7 +16,7 @@ process.env['DB_TESTDB2_DATABASE'] = db_name
 
 const database = require('scf-nodejs-serverlessdb-sdk').database
 
-exports.main_handler = async (event, context, callback) => {
+exports.main_handler = async (event, context) => {
   //use connection
   const connection = await database('TESTDB2').connection()
   const result = await connection.queryAsync('select * from coffee')
@@ -24,12 +24,12 @@ exports.main_handler = async (event, context, callback) => {
   console.log('db2 query result:',result)
 
   //use pool
+  //如果使用pool会使用连接池，函数跟DB会维持一个长连接，在Node10+的runtime中需要关掉等待异步的机制
+  context.callbackWaitsForEmptyEventLoop = false
   const pool = await database('TESTDB2').pool()
   const result2 = await pool.queryAsync('select * from coffee')
   // no need to release pool
 
   console.log('db2 query result:',result2)
 }
-
-
 ```
